@@ -1,0 +1,100 @@
+Red [
+	title: "libvlc.red"
+]
+
+#system [ 
+	#import [
+	 	"libvlc.dll" stdcall [
+		 	libvlc_new: "libvlc_new" [ 
+		 		argc [integer!]
+		 		char [integer!]
+		 		return: [integer!] 
+		 	]
+		 	
+		 	libvlc_media_new_path: "libvlc_media_new_path" [
+		 		p_instance [integer!]
+		 		mypath [c-string!]
+		 		return: [integer!] 
+		 	]
+			libvlc_media_player_new_from_media: "libvlc_media_player_new_from_media" [
+				p_md [integer!]
+				return: [integer!]
+			]
+			libvlc_media_player_play: "libvlc_media_player_play" [
+				p_mi [integer!]
+				return: [integer!]
+			]
+			libvlc_set_fullscreen: "libvlc_set_fullscreen" [
+				p_mi [integer!]
+				b_fullscreen [integer!]
+			]
+			libvlc_media_player_release: "libvlc_media_player_release" [
+				p_mi [integer!]
+			]
+					
+		] ;end libvlc
+	] ;end import
+	
+]
+ 
+red_libvlc_new: routine [ "Create and initialize a libvlc instance"
+	argc [integer!]
+	char [integer!]			
+	return: [integer!] 
+	/local 
+		res [integer!]
+][
+	res: libvlc_new argc char
+	res
+]
+
+red_libvlc_media_new_path: routine [ "Create a media for a certain file path."
+	p_instance  [integer!] 
+	mypath [string!]
+	return: [integer!] 
+	/local
+		res [integer!]
+][
+
+	res: libvlc_media_new_path p_instance as c-string! string/rs-head mypath 			
+	res
+]
+
+red_libvlc_media_player_new_from_media: routine [ "Create a Media Player object from a Media."
+	p_md  [integer!] 
+	return: [integer!] 
+	/local
+		res [integer!]
+][
+
+	res: libvlc_media_player_new_from_media p_md			
+	res
+]
+
+red_libvlc_media_player_play: routine [ "Play."
+	p_mi  [integer!] 
+	return: [integer!] 
+	/local
+		res [integer!]
+][
+
+	res: libvlc_media_player_play p_mi			
+	res
+]
+
+red_libvlc_set_fullscreen: routine [ "Enable or disable fullscreen."
+	p_mi  [integer!] 
+	b_fullscreen [integer!]
+][
+
+	libvlc_set_fullscreen p_mi b_fullscreen		
+	
+]
+
+red_libvlc_media_player_release: routine [ "Release a media_player after use Decrement the reference count of a media player object."
+	p_mi  [integer!] 
+][
+
+	libvlc_media_player_release p_mi 		
+	
+]
